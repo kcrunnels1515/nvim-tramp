@@ -6,11 +6,11 @@ M.hosts = {}
 M.mount_tmpl = "/home/kellyr/tmp/nvim-trampXXXXXX"
 
 function M.read_host()
-  local host_info_input = vim.fn.input("Enter host information (default port 22): ")
+  local host_info_input = vim.fn.input("Enter host information: ")
   local mount_res = {}
   local host_info = {}
 
-  for user, host in string.gmatch(host_info_input, "(%S+)@(%S+)") do
+  for user, host in string.gmatch(host_info_input, "(%S+)@(%S+):") do
     host_info.user = user
     host_info.host = host
   end
@@ -28,7 +28,8 @@ function M.read_host()
 
   host_info.port = "22"
 
-  for port in string.gmatch(host_info_input, "#(%d+)") do
+  local port = vim.fn.input("Enter port (default port 22): ")
+  if #port > 0 then
     host_info.port = port
   end
 
@@ -39,7 +40,7 @@ function M.read_host()
   end
 
   -- local channel_id = vim.fn.jobstart( { "sshfs", "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir })
-  local channel_id = vim.fn.jobstart( "sshfs -p " .. host_info.port .. " " .. host_info.user .. "@" .. host_info.host .. host_info.remote_dir .. " " .. host_info.mount_dir,
+  local channel_id = vim.fn.jobstart( "sshfs -p " .. host_info.port .. " " .. host_info.user .. "@" .. host_info.host .. ":" .. host_info.remote_dir .. " " .. host_info.mount_dir,
     { stdin = "pipe", pty = true, })
 
   vim.notify("channel id of " .. channel_id, vim.log.levels.INFO)
