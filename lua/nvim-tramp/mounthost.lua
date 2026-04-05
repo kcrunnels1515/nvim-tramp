@@ -8,7 +8,9 @@ M.mount_tmpl = "/tmp/nvim-trampXXXXXX"
 
 function M.open_host()
   local mounted_path = M.read_host()
-  if mounted_path != nil then
+  if mounted_path == nil then
+    vim.notify("Failed to properly create and mount", vim.log.levels.ERROR)
+  else
     vim.fn.chdir(mounted_path)
     require("nvim-tree").tree.open()
   end
@@ -25,7 +27,7 @@ function M.read_host()
   end
 
   if host_info.user == nil or host_info.host == nil then
-    vim.notify("Invalid host information", 2)
+    vim.notify("Invalid host information", vim.log.levels.ERROR)
     return nil
   end
 
@@ -43,7 +45,7 @@ function M.read_host()
 
   host_info.mount_dir = uv.fs_mkdtemp(M.mount_tmpl)
   if host_info.mount_dir == nil then
-    vim.notify("Failed to create mount directory", 2)
+    vim.notify("Failed to create mount directory", vim.log.levels.ERROR)
     return nil
   end
 
