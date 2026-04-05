@@ -1,9 +1,18 @@
 local uv = vim.uv
 local fzf_lua = require("fzf-lua")
+local nvim_tree = require("nvim-tree")
 local M = {}
 
 M.hosts = {}
 M.mount_tmpl = "/tmp/nvim-trampXXXXXX"
+
+function M.open_host()
+  local mounted_path = M.read_host()
+  if mounted_path != nil then
+    vim.fn.chdir(mounted_path)
+    require("nvim-tree").tree.open()
+  end
+end
 
 function M.read_host()
   local host_info_input = vim.fn.input("Enter host information (default port 22): ")
@@ -17,7 +26,7 @@ function M.read_host()
 
   if host_info.user == nil or host_info.host == nil then
     vim.notify("Invalid host information", 2)
-    return
+    return nil
   end
 
   host_info.remote_dir = "/"
@@ -35,7 +44,7 @@ function M.read_host()
   host_info.mount_dir = uv.fs_mkdtemp(M.mount_tmpl)
   if host_info.mount_dir == nil then
     vim.notify("Failed to create mount directory", 2)
-    return
+    return nil
   end
 
   local stdin = uv.new_pipe()
@@ -45,6 +54,7 @@ function M.read_host()
   local handle, pid = uv.spawn("sshfs",
     { args = { "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir }, stdio = {stdin, stdout, stderr} },
     function(code, signal)
+      -- handle:close()
       mount_res.code = code
       mount_res.signal = signal
     end)
@@ -52,8 +62,10 @@ function M.read_host()
   local host_passwd = vim.fn.inputsecret("Enter password: ")
 
   uv.write(stdin, host_passwd)
-  uv.unref(handle)
+  handle:close()
+  -- uv.unref(handle)
   M.hosts[host_info_input] = host_info
+  return host_info.mount_dir
 end
 
 function M.close_host(hostinfo)
@@ -62,8 +74,8 @@ function M.close_host(hostinfo)
   local handle, pid = uv.spawn("umount",
     { args = { host_info.mount_dir } },
     function(code, signal)
-      mount_res.code = code
-      mount_res.signal = signal
+      umount_res.code = code
+      umount_res.signal = signal
     end)
 
     uv.unref(handle)

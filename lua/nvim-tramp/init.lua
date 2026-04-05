@@ -16,6 +16,7 @@ local fzf_lua = require("fzf-lua")
 local M = {}
 
 M.hosts = mounthost.hosts
+M.open_host = mounthost.open_host
 M.read_host = mounthost.read_host
 M.close_host = mounthost.close_host_prompt
 M.close_all = mounthost.close_all
@@ -71,7 +72,7 @@ M.setup_keymaps = function()
     wk.register({
       ["<leader>f"] = {
         name = "+nvim-tramp",
-        to = { function() M.read_host() end, "Open new remote host" },
+        to = { function() M.open_host() end, "Open new remote host" },
         tc = { function() M.close_host_prompt() end, "Close a remote host" },
         -- t = { function() M.toggle() end, "Toggle Plugin" },
       }

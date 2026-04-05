@@ -9,7 +9,7 @@ end
 
 -- Create user commands for the plugin
 vim.api.nvim_create_user_command("NvimTrampOpen", function()
-  require("nvim-tramp").read_host()
+  require("nvim-tramp").open_host()
 end, {
   desc = "Open a remote host",
 })
