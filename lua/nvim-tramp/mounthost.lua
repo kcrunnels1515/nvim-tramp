@@ -1,6 +1,5 @@
 local uv = vim.uv
 local fzf_lua = require("fzf-lua")
-local nvim_tree = require("nvim-tree")
 local M = {}
 
 M.hosts = {}
@@ -12,7 +11,7 @@ function M.open_host()
     vim.notify("Failed to properly create and mount", vim.log.levels.ERROR)
   else
     vim.fn.chdir(mounted_path)
-    require("nvim-tree").tree.open()
+    require("nvim-tree.api").tree.open()
   end
 end
 
