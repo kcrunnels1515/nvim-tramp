@@ -38,22 +38,36 @@ function M.read_host()
     return nil
   end
 
-  local stdin = uv.new_pipe()
-  local stdout = uv.new_pipe()
-  local stderr = uv.new_pipe()
+  local channel_id = vim.fn.jobstart( { "sshfs", "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir })
 
-  local handle, pid = uv.spawn("sshfs",
-    { args = { "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir }, stdio = {stdin, stdout, stderr} },
-    function(code, signal)
-      -- handle:close()
-      mount_res.code = code
-      mount_res.signal = signal
-    end)
+  if channel_id <= 0 then
+    vim.notify("Invalid arguments", vim.log.levels.ERROR)
+    return nil
+  end
 
   local host_passwd = vim.fn.inputsecret("Enter password: ")
 
-  uv.write(stdin, host_passwd)
-  handle:close()
+  if vim.fn.chansend(channel_id, host_passwd) == 0 then
+    vim.notify("Failed to mount remote host with password", vim.log.levels.ERROR)
+    return nil
+  end
+
+  -- local stdin = uv.new_pipe()
+  -- local stdout = uv.new_pipe()
+  -- local stderr = uv.new_pipe()
+  --
+  -- local handle, pid = uv.spawn("sshfs",
+  --   { args = { "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir }, stdio = {stdin, stdout, stderr} },
+  --   function(code, signal)
+  --     -- handle:close()
+  --     mount_res.code = code
+  --     mount_res.signal = signal
+  --   end)
+  --
+  -- local host_passwd = vim.fn.inputsecret("Enter password: ")
+  --
+  -- uv.write(stdin, host_passwd)
+  -- handle:close()
   -- uv.unref(handle)
   M.hosts[host_info_input] = host_info
   return host_info.mount_dir
@@ -73,14 +87,21 @@ end
 function M.close_host(hostinfo)
   local umount_res = {}
 
-  local handle, pid = uv.spawn("umount",
-    { args = { host_info.mount_dir } },
-    function(code, signal)
-      umount_res.code = code
-      umount_res.signal = signal
-    end)
+  local channel_id = vim.fn.jobstart( { "umount", hostinfo.mount_dir })
 
-    uv.unref(handle)
+  if channel_id <= 0 then
+    vim.notify("Failed to unmount directory", vim.log.levels.ERROR)
+    return
+  end
+
+  -- local handle, pid = uv.spawn("umount",
+  --   { args = { host_info.mount_dir } },
+  --   function(code, signal)
+  --     umount_res.code = code
+  --     umount_res.signal = signal
+  --   end)
+  --
+  --   uv.unref(handle)
 
     uv.fs_rmdir(hostinfo.mount_dir)
 end
