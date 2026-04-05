@@ -5,16 +5,6 @@ local M = {}
 M.hosts = {}
 M.mount_tmpl = "/tmp/nvim-trampXXXXXX"
 
-function M.open_host()
-  local mounted_path = M.read_host()
-  if mounted_path == nil then
-    vim.notify("Failed to properly create and mount", vim.log.levels.ERROR)
-  else
-    vim.fn.chdir(mounted_path)
-    require("nvim-tree.api").tree.open()
-  end
-end
-
 function M.read_host()
   local host_info_input = vim.fn.input("Enter host information (default port 22): ")
   local mount_res = {}
@@ -67,6 +57,16 @@ function M.read_host()
   -- uv.unref(handle)
   M.hosts[host_info_input] = host_info
   return host_info.mount_dir
+end
+
+function M.open_host()
+  local mounted_path = M.read_host()
+  if mounted_path == nil then
+    vim.notify("Failed to properly create and mount", vim.log.levels.ERROR)
+  else
+    vim.fn.chdir(mounted_path)
+    require("nvim-tree.api").tree.open()
+  end
 end
 
 function M.close_host(hostinfo)
