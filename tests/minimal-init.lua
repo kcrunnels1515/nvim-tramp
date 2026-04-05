@@ -4,6 +4,7 @@
 -- Set up package path
 local package_path = vim.fn.stdpath("config") .. "/lua"
 package.path = package.path .. ";" .. package_path .. "/?.lua;" .. package_path .. "/?/init.lua"
+print(package_path)
 
 -- Set leader key
 vim.g.mapleader = " "
@@ -28,23 +29,23 @@ vim.opt.showmode = false
 local function load_plugin(nvim_tramp)
   -- Get the plugin path
   local plugin_path = debug.getinfo(2, "S").source:sub(2):match("(.*/tests)/.*$") .. "/.."
-  
+
   -- Add the plugin to the runtimepath
   vim.opt.runtimepath:append(plugin_path)
-  
+
   -- Attempt to load the plugin
   local status_ok, plugin = pcall(require, nvim_tramp)
   if not status_ok then
     vim.notify("Failed to load " .. nvim_tramp, vim.log.levels.ERROR)
     return nil
   end
-  
+
   -- Return the loaded plugin
   return plugin
 end
 
 -- Setup the plugin
-local nvim_tramp = "nvim-tramp"  -- Replace with your actual plugin name
+local nvim_tramp = "nvim-tramp" -- Replace with your actual plugin name
 local plugin = load_plugin(nvim_tramp)
 
 if plugin then
