@@ -50,10 +50,12 @@ function M.read_host()
 
   local host_passwd = vim.fn.inputsecret("Enter password: ")
 
-  if vim.fn.chansend(channel_id, host_passwd) == 0 then
+  if vim.fn.chansend(channel_id, { host_passwd, ''} ) == 0 then
     vim.notify("Failed to mount remote host with password", vim.log.levels.ERROR)
     return nil
   end
+
+  vim.fn.jobwait( { channel_id } )
 
   -- local stdin = uv.new_pipe()
   -- local stdout = uv.new_pipe()
