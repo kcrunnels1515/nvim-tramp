@@ -39,7 +39,7 @@ function M.read_host()
   end
 
   -- local channel_id = vim.fn.jobstart( { "sshfs", "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir })
-  local channel_id = vim.fn.jobstart( "sshfs -p " .. host_info.port .. " " .. host_info.user .. "@" .. host_info.host .. host_info.remote_dir .. " " .. host_info.mount_dir)
+  local channel_id = vim.fn.jobstart( "sshfs -p " .. host_info.port .. " " .. host_info.user .. "@" .. host_info.host .. host_info.remote_dir .. " " .. host_info.mount_dir, { stdin = "pipe", })
 
   vim.notify("channel id of " .. channel_id, vim.log.levels.INFO)
 
