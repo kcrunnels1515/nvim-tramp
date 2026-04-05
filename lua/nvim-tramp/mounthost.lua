@@ -40,6 +40,8 @@ function M.read_host()
 
   local channel_id = vim.fn.jobstart( { "sshfs", "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir })
 
+  vim.notify("channel id of " .. channel_id, vim.log.levels.INFO)
+
   if channel_id <= 0 then
     vim.notify("Invalid arguments", vim.log.levels.ERROR)
     return nil
