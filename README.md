@@ -1,6 +1,6 @@
 <div align="center">
 
-# Neovim Plugin Template
+# nvim-tramp
 
 [![GitHub License](https://img.shields.io/github/license/greggh/neovim-plugin-template?style=flat-square)](https://github.com/greggh/neovim-plugin-template/blob/main/LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/greggh/neovim-plugin-template?style=flat-square)](https://github.com/greggh/neovim-plugin-template/stargazers)
@@ -11,7 +11,7 @@
 [![Version](https://img.shields.io/badge/Version-0.1.1-blue?style=flat-square)](https://github.com/greggh/neovim-plugin-template/releases/tag/v0.1.1)
 [![Discussions](https://img.shields.io/github/discussions/greggh/neovim-plugin-template?style=flat-square&logo=github)](https://github.com/greggh/neovim-plugin-template/discussions)
 
-*A template for creating Neovim plugins with best practices and standardized structure*
+*Emacs TRAMP functionality for Neovim*
 
 [Features](#features) •
 [Requirements](#requirements) •
@@ -75,12 +75,12 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
 {
-  "greggh/plugin-name",
+  "greggh/nvim-tramp",
   dependencies = {
     -- Add dependencies here
   },
   config = function()
-    require("plugin-name").setup({
+    require("nvim-tramp").setup({
       -- Your configuration
     })
   end
@@ -91,12 +91,12 @@ Using [packer.nvim](https://github.com/wbthomason/packer.nvim):
 
 ```lua
 use {
-  'greggh/plugin-name',
+  'greggh/nvim-tramp',
   requires = {
     -- Add dependencies here
   },
   config = function()
-    require('plugin-name').setup({
+    require('nvim-tramp').setup({
       -- Your configuration
     })
   end
@@ -106,10 +106,10 @@ use {
 Using [vim-plug](https://github.com/junegunn/vim-plug):
 
 ```vim
-Plug 'greggh/plugin-name'
+Plug 'greggh/nvim-tramp'
 
 " In your init.vim after plug#end():
-lua require('plugin-name').setup({})
+lua require('nvim-tramp').setup({})
 ```
 
 ## Usage
@@ -131,7 +131,7 @@ Key mappings (if using which-key):
 Default configuration:
 
 ```lua
-require("plugin-name").setup({
+require("nvim-tramp").setup({
   enabled = true,
   debug = false,
   -- Add other options here
@@ -149,8 +149,8 @@ require("plugin-name").setup({
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/plugin-name.git
-   cd plugin-name
+   git clone https://github.com/kcrunnels1515/nvim-tramp.git
+   cd nvim-tramp
    ```
 
 2. Install development dependencies:
@@ -169,12 +169,12 @@ require("plugin-name").setup({
 ```
 .
 ├── lua/
-│   └── plugin-name/      # Plugin code
+│   └── nvim-tramp/      # Plugin code
 │       └── init.lua      # Main entry point
 ├── plugin/
-│   └── plugin-name.lua   # Plugin load script
+│   └── nvim-tramp.lua   # Plugin load script
 ├── doc/
-│   └── plugin-name.txt   # Help documentation
+│   └── nvim-tramp.txt   # Help documentation
 ├── tests/
 │   ├── minimal-init.lua  # Minimal config for testing
 │   └── spec/             # Test specifications

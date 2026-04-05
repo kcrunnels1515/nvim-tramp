@@ -1,4 +1,4 @@
--- plugin-name/init.lua
+-- nvim-tramp/init.lua
 -- Main entry point for your plugin
 
 -- Plugin configuration
@@ -20,7 +20,7 @@ M.setup = function(opts)
 
   -- Validate configuration
   if type(config.enabled) ~= "boolean" then
-    vim.notify("plugin-name: 'enabled' option must be boolean", vim.log.levels.ERROR)
+    vim.notify("nvim-tramp: 'enabled' option must be boolean", vim.log.levels.ERROR)
     return
   end
 
@@ -28,7 +28,7 @@ M.setup = function(opts)
 
   -- Early return if disabled
   if not config.enabled then
-    vim.notify("plugin-name is disabled", vim.log.levels.INFO)
+    vim.notify("nvim-tramp is disabled", vim.log.levels.INFO)
     return
   end
 
@@ -47,7 +47,7 @@ M.setup = function(opts)
 
   -- Log debug information
   if config.debug then
-    vim.notify("plugin-name: plugin initialized with config: " .. vim.inspect(config), vim.log.levels.DEBUG)
+    vim.notify("nvim-tramp: plugin initialized with config: " .. vim.inspect(config), vim.log.levels.DEBUG)
   end
 end
 
@@ -57,14 +57,14 @@ M.setup_keymaps = function()
   local opts = { noremap = true, silent = true } -- Used for keymap functions
 
   -- Example of setting a keymap
-  -- vim.keymap.set("n", "<leader>p", function() require("plugin-name").some_function() end, opts)
+  -- vim.keymap.set("n", "<leader>p", function() require("nvim-tramp").some_function() end, opts)
 
   -- Register with which-key if available
   local ok, wk = pcall(require, "which-key")
   if ok then
     wk.register({
       ["<leader>p"] = {
-        name = "+plugin-name",
+        name = "+nvim-tramp",
         f = { function() M.some_function() end, "Plugin Function" },
         t = { function() M.toggle() end, "Toggle Plugin" },
       }
@@ -75,13 +75,13 @@ end
 ---Example function that your plugin provides
 M.some_function = function()
   -- Your plugin logic here
-  vim.notify("plugin-name: some_function called", vim.log.levels.INFO)
+  vim.notify("nvim-tramp: some_function called", vim.log.levels.INFO)
 end
 
 ---Toggle plugin enabled state
 M.toggle = function()
   config.enabled = not config.enabled
-  vim.notify("plugin-name: " .. (config.enabled and "enabled" or "disabled"), vim.log.levels.INFO)
+  vim.notify("nvim-tramp: " .. (config.enabled and "enabled" or "disabled"), vim.log.levels.INFO)
 end
 
 ---Get current configuration

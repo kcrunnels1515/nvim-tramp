@@ -1,21 +1,21 @@
-*plugin-name.txt*  Description of your plugin functionality
+*nvim-tramp.txt*  Emacs TRAMP functionality for Neovim
 
 ================================================================================
-CONTENTS                                                    *plugin-name-contents*
+CONTENTS                                                    *nvim-tramp-contents*
 
-1. Introduction ................ |plugin-name-introduction|
-2. Requirements ................ |plugin-name-requirements|
-3. Installation ................ |plugin-name-installation|
-4. Configuration ............... |plugin-name-configuration|
-5. Commands .................... |plugin-name-commands|
-6. Mappings .................... |plugin-name-mappings|
-7. API Functions ............... |plugin-name-api|
-8. Troubleshooting ............. |plugin-name-troubleshooting|
-9. Contributing ................ |plugin-name-contributing|
-10. License .................... |plugin-name-license|
+1. Introduction ................ |nvim-tramp-introduction|
+2. Requirements ................ |nvim-tramp-requirements|
+3. Installation ................ |nvim-tramp-installation|
+4. Configuration ............... |nvim-tramp-configuration|
+5. Commands .................... |nvim-tramp-commands|
+6. Mappings .................... |nvim-tramp-mappings|
+7. API Functions ............... |nvim-tramp-api|
+8. Troubleshooting ............. |nvim-tramp-troubleshooting|
+9. Contributing ................ |nvim-tramp-contributing|
+10. License .................... |nvim-tramp-license|
 
 ================================================================================
-1. Introduction                                      *plugin-name-introduction*
+1. Introduction                                      *nvim-tramp-introduction*
 
 A Neovim plugin that [brief description of what your plugin does].
 
@@ -25,7 +25,7 @@ Key features:
 - Feature three
 
 ================================================================================
-2. Requirements                                      *plugin-name-requirements*
+2. Requirements                                      *nvim-tramp-requirements*
 
 - Neovim >= 0.8.0
 - [Any other dependencies]
@@ -35,17 +35,17 @@ Optional dependencies:
 - which-key.nvim (for keymap integration)
 
 ================================================================================
-3. Installation                                      *plugin-name-installation*
+3. Installation                                      *nvim-tramp-installation*
 
 Using lazy.nvim:
 >lua
   {
-    "username/plugin-name",
+    "username/nvim-tramp",
     dependencies = {
       "nvim-lua/plenary.nvim", -- if needed
     },
     config = function()
-      require("plugin-name").setup({
+      require("nvim-tramp").setup({
         -- your configuration
       })
     end
@@ -55,10 +55,10 @@ Using lazy.nvim:
 Using packer.nvim:
 >lua
   use {
-    'username/plugin-name',
+    'username/nvim-tramp',
     requires = { 'nvim-lua/plenary.nvim' }, -- if needed
     config = function()
-      require('plugin-name').setup({
+      require('nvim-tramp').setup({
         -- your configuration
       })
     end
@@ -66,11 +66,11 @@ Using packer.nvim:
 <
 
 ================================================================================
-4. Configuration                                    *plugin-name-configuration*
+4. Configuration                                    *nvim-tramp-configuration*
 
 The default configuration:
 >lua
-  require("plugin-name").setup({
+  require("nvim-tramp").setup({
     enabled = true,
     debug = false,
     -- Add other default values
@@ -92,7 +92,7 @@ debug~
 [Add other configuration options here]
 
 ================================================================================
-5. Commands                                              *plugin-name-commands*
+5. Commands                                              *nvim-tramp-commands*
 
 The plugin provides the following commands:
 
@@ -103,7 +103,7 @@ The plugin provides the following commands:
   Toggles the plugin on/off.
 
 ================================================================================
-6. Mappings                                              *plugin-name-mappings*
+6. Mappings                                              *nvim-tramp-mappings*
 
 Default mappings (when using which-key):
 
@@ -117,9 +117,9 @@ Default mappings (when using which-key):
   Toggle plugin on/off
 
 ================================================================================
-7. API Functions                                             *plugin-name-api*
+7. API Functions                                             *nvim-tramp-api*
 
-*plugin-name.setup()*
+*nvim-tramp.setup()*
   Set up the plugin with the provided configuration.
   
   Parameters:
@@ -127,13 +127,13 @@ Default mappings (when using which-key):
   
   Example:
 >lua
-  require("plugin-name").setup({
+  require("nvim-tramp").setup({
     enabled = true,
     debug = true,
   })
 <
 
-*plugin-name.some_function()*
+*nvim-tramp.some_function()*
   Description of what this function does.
   
   Parameters:
@@ -144,19 +144,19 @@ Default mappings (when using which-key):
   
   Example:
 >lua
-  require("plugin-name").some_function()
+  require("nvim-tramp").some_function()
 <
 
-*plugin-name.toggle()*
+*nvim-tramp.toggle()*
   Toggle the plugin on/off.
   
   Example:
 >lua
-  require("plugin-name").toggle()
+  require("nvim-tramp").toggle()
 <
 
 ================================================================================
-8. Troubleshooting                                *plugin-name-troubleshooting*
+8. Troubleshooting                                *nvim-tramp-troubleshooting*
 
 Common issues:
 
@@ -166,16 +166,16 @@ Solution: [Detailed solution]
 Issue 2: [Description of another common issue]
 Solution: [Detailed solution]
 
-For more help, submit an issue: https://github.com/username/plugin-name/issues
+For more help, submit an issue: https://github.com/username/nvim-tramp/issues
 
 ================================================================================
-9. Contributing                                      *plugin-name-contributing*
+9. Contributing                                      *nvim-tramp-contributing*
 
 Contributions are welcome! Please check the GitHub repository for details:
-https://github.com/username/plugin-name/blob/main/CONTRIBUTING.md
+https://github.com/username/nvim-tramp/blob/main/CONTRIBUTING.md
 
 ================================================================================
-10. License                                              *plugin-name-license*
+10. License                                              *nvim-tramp-license*
 
 This plugin is licensed under the MIT License.
 See the LICENSE file for more details.

@@ -25,7 +25,7 @@ vim.opt.relativenumber = true
 vim.opt.showmode = false
 
 -- Basic plugin loading code
-local function load_plugin(plugin_name)
+local function load_plugin(nvim_tramp)
   -- Get the plugin path
   local plugin_path = debug.getinfo(2, "S").source:sub(2):match("(.*/tests)/.*$") .. "/.."
   
@@ -33,9 +33,9 @@ local function load_plugin(plugin_name)
   vim.opt.runtimepath:append(plugin_path)
   
   -- Attempt to load the plugin
-  local status_ok, plugin = pcall(require, plugin_name)
+  local status_ok, plugin = pcall(require, nvim_tramp)
   if not status_ok then
-    vim.notify("Failed to load " .. plugin_name, vim.log.levels.ERROR)
+    vim.notify("Failed to load " .. nvim_tramp, vim.log.levels.ERROR)
     return nil
   end
   
@@ -44,8 +44,8 @@ local function load_plugin(plugin_name)
 end
 
 -- Setup the plugin
-local plugin_name = "plugin-name"  -- Replace with your actual plugin name
-local plugin = load_plugin(plugin_name)
+local nvim_tramp = "nvim-tramp"  -- Replace with your actual plugin name
+local plugin = load_plugin(nvim_tramp)
 
 if plugin then
   plugin.setup({
@@ -53,9 +53,9 @@ if plugin then
     enabled = true,
     debug = true,
   })
-  vim.notify(plugin_name .. " loaded successfully", vim.log.levels.INFO)
+  vim.notify(nvim_tramp .. " loaded successfully", vim.log.levels.INFO)
 else
-  vim.notify("Could not load " .. plugin_name, vim.log.levels.ERROR)
+  vim.notify("Could not load " .. nvim_tramp, vim.log.levels.ERROR)
 end
 
 -- Return the loaded plugin for direct access in tests

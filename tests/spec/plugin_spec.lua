@@ -2,16 +2,16 @@
 -- Tests for plugin functionality
 
 -- Load test helpers
-local plugin_name = 'plugin-name'  -- Replace with your actual plugin name
+local nvim_tramp = 'nvim-tramp'  -- Replace with your actual plugin name
 
-describe(plugin_name, function()
+describe(nvim_tramp, function()
   -- Test setup function
   before_each(function()
     -- Reset any state between tests
-    vim.cmd('lua package.loaded["' .. plugin_name .. '"] = nil')
+    vim.cmd('lua package.loaded["' .. nvim_tramp .. '"] = nil')
     
     -- Re-load the plugin
-    require(plugin_name).setup({
+    require(nvim_tramp).setup({
       enabled = true,
       debug = true,
     })
@@ -27,14 +27,14 @@ describe(plugin_name, function()
   describe('initialization', function()
     it('loads successfully', function()
       -- Test that the plugin loaded correctly
-      local plugin = require(plugin_name)
+      local plugin = require(nvim_tramp)
       assert.truthy(plugin)
       assert.truthy(plugin.setup)
     end)
 
     it('applies configuration', function()
       -- Test that configuration is applied correctly
-      local plugin = require(plugin_name)
+      local plugin = require(nvim_tramp)
       plugin.setup({ debug = true })
       local config = plugin.get_config()
       assert.truthy(config)
@@ -46,7 +46,7 @@ describe(plugin_name, function()
   describe('functionality', function()
     it('some_function works as expected', function()
       -- Test a specific functionality
-      local plugin = require(plugin_name)
+      local plugin = require(nvim_tramp)
       assert.has_no.errors(function()
         plugin.some_function()
       end)
@@ -54,7 +54,7 @@ describe(plugin_name, function()
 
     it('toggle changes enable state', function()
       -- Test the toggle functionality
-      local plugin = require(plugin_name)
+      local plugin = require(nvim_tramp)
       local initial_state = plugin.get_config().enabled
       plugin.toggle()
       assert.not_equal(initial_state, plugin.get_config().enabled)
