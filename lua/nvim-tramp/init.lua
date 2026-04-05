@@ -9,8 +9,16 @@ local config = {
   -- Add your plugin's configuration options here
 }
 
+local mounthost = require("nvim-tramp.mounthost")
+local fzf_lua = require("fzf_lua")
+
 -- Main plugin module
 local M = {}
+
+M.hosts = mounthost.hosts
+M.read_host = mounthost.read_host
+M.close_host = mounthost.close_host_prompt
+M.close_all = mounthost.close_all
 
 ---Setup function - called by user to configure the plugin
 ---@param opts table: User configuration options
@@ -33,13 +41,11 @@ M.setup = function(opts)
   end
 
   -- Set up autocommands if necessary
-  vim.api.nvim_create_augroup("PluginName", { clear = true })
-  vim.api.nvim_create_autocmd("FileType", {
-    group = "PluginName",
-    pattern = { "lua", "vim" }, -- Adjust file types as needed
-    callback = function()
-      -- Your autocmd logic here
-    end,
+  vim.api.nvim_create_augroup("NvimTramp", { clear = true })
+  vim.api.nvim_create_autocmd("VimLeavePre", {
+    group = "NvimTramp",
+    pattern = { "*" }, -- Adjust file types as needed
+    callback = M.close_all,
   })
 
   -- Load keymappings if necessary
@@ -63,20 +69,21 @@ M.setup_keymaps = function()
   local ok, wk = pcall(require, "which-key")
   if ok then
     wk.register({
-      ["<leader>p"] = {
+      ["<leader>f"] = {
         name = "+nvim-tramp",
-        f = { function() M.some_function() end, "Plugin Function" },
-        t = { function() M.toggle() end, "Toggle Plugin" },
+        to = { function() M.read_host() end, "Open new remote host" },
+        tc = { function() M.close_host_prompt() end, "Close a remote host" },
+        -- t = { function() M.toggle() end, "Toggle Plugin" },
       }
     })
   end
 end
 
----Example function that your plugin provides
-M.some_function = function()
-  -- Your plugin logic here
-  vim.notify("nvim-tramp: some_function called", vim.log.levels.INFO)
-end
+-- ---Example function that your plugin provides
+-- M.some_function = function()
+--   -- Your plugin logic here
+--   vim.notify("nvim-tramp: some_function called", vim.log.levels.INFO)
+-- end
 
 ---Toggle plugin enabled state
 M.toggle = function()

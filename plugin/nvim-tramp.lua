@@ -8,13 +8,26 @@ if vim.fn.has("nvim-0.8") == 0 then
 end
 
 -- Create user commands for the plugin
-vim.api.nvim_create_user_command("PluginNameCommand", function()
-  require("nvim-tramp").some_function()
+vim.api.nvim_create_user_command("NvimTrampOpen", function()
+  require("nvim-tramp").read_host()
 end, {
-  desc = "Execute plugin's main function",
+  desc = "Open a remote host",
 })
 
-vim.api.nvim_create_user_command("PluginNameToggle", function()
+vim.api.nvim_create_user_command("NvimTrampClose", function()
+  require("nvim-tramp").close_host_prompt()
+end, {
+  desc = "Close connection with a remote host",
+})
+
+vim.api.nvim_create_user_command("NvimTrampCloseAll", function()
+  require("nvim-tramp").close_all()
+end, {
+  desc = "Close all remote connections",
+})
+
+
+vim.api.nvim_create_user_command("NvimTrampToggle", function()
   require("nvim-tramp").toggle()
 end, {
   desc = "Toggle plugin on/off",

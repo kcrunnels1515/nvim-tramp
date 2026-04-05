@@ -88,4 +88,10 @@ function M.close_host_prompt()
 
 end
 
+function M.close_all()
+  for _, info in M.hosts do
+    M.close_host(info)
+  end
+end
+
 return M
