@@ -3,7 +3,7 @@ local fzf_lua = require("fzf-lua")
 local M = {}
 
 M.hosts = {}
-M.mount_tmpl = "/tmp/nvim-trampXXXXXX"
+M.mount_tmpl = "/home/kellyr/tmp/nvim-trampXXXXXX"
 
 function M.read_host()
   local host_info_input = vim.fn.input("Enter host information (default port 22): ")
