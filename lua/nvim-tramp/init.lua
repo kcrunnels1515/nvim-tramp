@@ -10,7 +10,7 @@ local config = {
 }
 
 local mounthost = require("nvim-tramp.mounthost")
-local fzf_lua = require("fzf_lua")
+local fzf_lua = require("fzf-lua")
 
 -- Main plugin module
 local M = {}
