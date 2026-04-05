@@ -57,7 +57,7 @@ function M.read_host()
     return nil
   end
 
-  vim.fn.jobwait( { channel_id } )
+  -- vim.fn.jobwait( { channel_id } )
 
   -- local stdin = uv.new_pipe()
   -- local stdout = uv.new_pipe()
