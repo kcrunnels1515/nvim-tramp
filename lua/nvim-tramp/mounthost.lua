@@ -61,6 +61,7 @@ end
 
 function M.open_host()
   local mounted_path = M.read_host()
+  print(mounted_path)
   if mounted_path == nil then
     vim.notify("Failed to properly create and mount", vim.log.levels.ERROR)
   else
