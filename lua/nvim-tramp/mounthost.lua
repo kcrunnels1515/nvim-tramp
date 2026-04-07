@@ -153,8 +153,8 @@ function M.close_host_prompt()
     prompt = "Close host> ",
     actions = {
       ["default"] = function(selected)
-        print(selected)
-        M.close_host(M.hosts[selected])
+        print(selected[1])
+        M.close_host(M.hosts[selected[1]])
       end,
     }
   })
