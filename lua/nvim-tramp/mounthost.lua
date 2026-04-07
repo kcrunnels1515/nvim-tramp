@@ -40,42 +40,69 @@ function M.read_host()
   end
 
   -- local channel_id = vim.fn.jobstart( { "sshfs", "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir })
-  local channel_id = vim.fn.jobstart( "sshfs -p " .. host_info.port .. " " .. host_info.user .. "@" .. host_info.host .. ":" .. host_info.remote_dir .. " " .. host_info.mount_dir,
-    { stdin = "pipe", pty = true, })
 
-  vim.notify("channel id of " .. channel_id, vim.log.levels.INFO)
+  local stdin = uv.new_pipe()
+  local stdout = uv.new_pipe()
+  local stderr = uv.new_pipe()
 
-  if channel_id <= 0 then
-    vim.notify("Invalid arguments", vim.log.levels.ERROR)
-    return nil
-  end
+  local handle, pid = uv.spawn("sshfs",
+    { args = { "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir }, stdio = {stdin, stdout, stderr} },
+    function(code, signal)
+      uv.write(stdout, tostring(code) .. "," .. tostring(signal))
+      handle:close()
+      -- mount_res.code = code
+      -- mount_res.signal = signal
+    end)
 
   local host_passwd = vim.fn.inputsecret("Enter password: ")
 
-  if vim.fn.chansend(channel_id, { host_passwd, ''} ) == 0 then
-    vim.notify("Failed to mount remote host with password", vim.log.levels.ERROR)
+  uv.write(stdin, host_passwd)
+
+  uv.read_start(stdout, function(err, chunk)
+    if err then
+      vim.notify("Got error reading from stdout pipe: " .. err, vim.log.levels.ERROR)
+      mount_res.code = -1
+    elseif chunk then
+      for code, sig in string.gmatch(chunk, "(%d+),(%d+)") do
+        mount_res.code = code
+        mount_res.signal = signal
+      end
+      uv.read_stop(stdout)
+    else
+      vim.notify("Disconnect from pipe", vim.log.levels.ERROR)
+      mount_res.code = -1
+    end
+  end)
+
+  uv.shutdown(stdin, function()
+    uv.close(handle)
+  end)
+
+  if mount_res.code ~= 0 then
     return nil
   end
 
-  -- vim.fn.jobwait( { channel_id } )
-
-  -- local stdin = uv.new_pipe()
-  -- local stdout = uv.new_pipe()
-  -- local stderr = uv.new_pipe()
+  -- handle:close()
+  -- uv.unref(handle)
+  -- local channel_id = vim.fn.jobstart( "sshfs -p " .. host_info.port .. " " .. host_info.user .. "@" .. host_info.host .. ":" .. host_info.remote_dir .. " " .. host_info.mount_dir,
+  --   { stdin = "pipe", pty = true, })
   --
-  -- local handle, pid = uv.spawn("sshfs",
-  --   { args = { "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir }, stdio = {stdin, stdout, stderr} },
-  --   function(code, signal)
-  --     -- handle:close()
-  --     mount_res.code = code
-  --     mount_res.signal = signal
-  --   end)
+  -- vim.notify("channel id of " .. channel_id, vim.log.levels.INFO)
+  --
+  -- if channel_id <= 0 then
+  --   vim.notify("Invalid arguments", vim.log.levels.ERROR)
+  --   return nil
+  -- end
   --
   -- local host_passwd = vim.fn.inputsecret("Enter password: ")
   --
-  -- uv.write(stdin, host_passwd)
-  -- handle:close()
-  -- uv.unref(handle)
+  -- if vim.fn.chansend(channel_id, { host_passwd, ''} ) == 0 then
+  --   vim.notify("Failed to mount remote host with password", vim.log.levels.ERROR)
+  --   return nil
+  -- end
+
+  -- vim.fn.jobwait( { channel_id } )
+
   M.hosts[host_info_input] = host_info
   return host_info.mount_dir
 end
