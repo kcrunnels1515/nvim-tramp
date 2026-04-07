@@ -73,7 +73,7 @@ M.setup_keymaps = function()
       ["<leader>f"] = {
         name = "+nvim-tramp",
         to = { function() M.open_host() end, "Open new remote host" },
-        tc = { function() M.close_host_prompt() end, "Close a remote host" },
+        tc = { function() M.close_host() end, "Close a remote host" },
         -- t = { function() M.toggle() end, "Toggle Plugin" },
       }
     })

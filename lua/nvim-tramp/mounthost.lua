@@ -3,7 +3,7 @@ local fzf_lua = require("fzf-lua")
 local M = {}
 
 M.hosts = {}
-M.mount_tmpl = "/home/kellyr/tmp/nvim-trampXXXXXX"
+M.mount_tmpl = "/tmp/nvim-trampXXXXXX"
 
 function M.read_host()
   local host_info_input = vim.fn.input("Enter host information: ")
@@ -123,11 +123,9 @@ function M.open_host()
 end
 
 function M.close_host(hostinfo)
-  local umount_res = {}
+  local res = os.execute("umount " .. hostinfo.mount_dir)
 
-  local channel_id = vim.fn.jobstart( { "umount", hostinfo.mount_dir })
-
-  if channel_id <= 0 then
+  if res ~= 0 then
     vim.notify("Failed to unmount directory", vim.log.levels.ERROR)
     return
   end
@@ -154,7 +152,7 @@ function M.close_host_prompt()
     prompt = "Close host> ",
     actions = {
       ["default"] = function(selected)
-        M.close_host(M.hosts[selected])
+        local _ = M.close_host(M.hosts[selected])
       end,
     }
   })
