@@ -46,7 +46,7 @@ function M.read_host()
   local stderr = uv.new_pipe()
 
   local handle, pid = uv.spawn("sshfs",
-    { args = { "-p", host_info.port, host_info.user .. "@" .. host_info.host .. host_info.remote_dir, host_info.mount_dir }, stdio = {stdin, stdout, stderr} },
+    { args = { "-p", host_info.port, host_info.user .. "@" .. host_info.host .. ":" .. host_info.remote_dir, host_info.mount_dir }, stdio = {stdin, stdout, stderr} },
     function(code, signal)
       uv.write(stdout, tostring(code) .. "," .. tostring(signal))
       handle:close()
