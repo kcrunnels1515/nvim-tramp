@@ -44,7 +44,7 @@ M.setup = function(opts)
 
   -- Set up autocommands if necessary
   vim.api.nvim_create_augroup("NvimTramp", { clear = true })
-  vim.api.nvim_create_autocmd("VimLeavePre", {
+  vim.api.nvim_create_autocmd("VimLeave", {
     group = "NvimTramp",
     pattern = { "*" }, -- Adjust file types as needed
     callback = M.close_all,
