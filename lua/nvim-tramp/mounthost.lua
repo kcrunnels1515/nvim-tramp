@@ -1,5 +1,6 @@
 local uv = vim.uv
 local fzf_lua = require("fzf-lua")
+
 local M = {}
 
 M.hosts = {}
@@ -144,7 +145,7 @@ end
 
 function M.close_host_prompt()
   local hosts = {}
-  for host, _ in M.hosts do
+  for host, _ in pairs(M.hosts) do
     table.insert(hosts, host)
   end
 
@@ -160,7 +161,7 @@ function M.close_host_prompt()
 end
 
 function M.close_all()
-  for _, info in M.hosts do
+  for _, info in pairs(M.hosts) do
     M.close_host(info)
   end
 end
