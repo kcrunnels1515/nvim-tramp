@@ -54,9 +54,9 @@ function M.read_host()
       -- mount_res.signal = signal
     end)
 
-  local host_passwd = vim.fn.inputsecret("Enter password: ")
-
-  uv.write(stdin, host_passwd)
+  -- local host_passwd = vim.fn.inputsecret("Enter password: ")
+  --
+  -- uv.write(stdin, host_passwd)
 
   uv.read_start(stdout, function(err, chunk)
     if err then
