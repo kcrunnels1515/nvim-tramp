@@ -60,7 +60,7 @@ function M.read_host()
 
   uv.read_start(stdout, function(err, chunk)
     if err then
-      vim.notify("Got error reading from stdout pipe: " .. err, vim.log.levels.ERROR)
+      -- vim.notify("Got error reading from stdout pipe: " .. err, vim.log.levels.ERROR)
       mount_res.code = -1
     elseif chunk then
       for code, sig in string.gmatch(chunk, "(%d+),(%d+)") do
@@ -69,8 +69,8 @@ function M.read_host()
       end
       uv.read_stop(stdout)
     else
-      vim.notify("Disconnect from pipe", vim.log.levels.ERROR)
-      mount_res.code = -1
+      -- vim.notify("Disconnect from pipe", vim.log.levels.ERROR)
+      mount_res.code = -2
     end
   end)
 
@@ -78,7 +78,11 @@ function M.read_host()
     uv.close(handle)
   end)
 
-  if mount_res.code ~= 0 then
+  if mount_res.code == -1 then
+    vim.notify("Got error reading from stdout pipe: " .. err, vim.log.levels.ERROR)
+    return nil
+  elseif mount_res.code == -2 then
+    vim.notify("Disconnect from pipe", vim.log.levels.ERROR)
     return nil
   end
 
