@@ -108,6 +108,7 @@ function M.open_host()
   else
     vim.fn.chdir(mounted_path)
     require("nvim-tree.api").tree.open()
+    require("nvim-tree.api").tree.change_root(mounted_path)
   end
 end
 
